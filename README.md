@@ -88,12 +88,21 @@ pnpm i babel-plugin-classname-for-css-module -D
 
 ## 🔨 Usage
 
+- first you need to apply the plugin
+
 ```json
+// babel.config.js
 {
   "plugins": ["babel-plugin-classname-for-css-module"]
 }
 ```
 
+- then you just need to include the css module in the js file where you want to use it
 
+```js
+import './style.module.css';
+```
+
+finally start to code !
 
 ☑️ **Todo** :  This plugin currently only supports importing a single style file, but will support multiple style files in the future (because the 🐭🐭 has a final exam).
