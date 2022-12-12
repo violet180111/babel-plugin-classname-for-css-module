@@ -2,7 +2,7 @@
   "name": "babel-plugin-classname-for-css-module",
   "version": "0.0.1",
   "author": "violet180111",
-  "description": "A babel plugin that lets you write classname directly without import xxx.css.module",
+  "description": "A babel plugin lets you use css modules while writing string classnames directly",
   "keywords": [
     "babel-plugin",
     "classname",
