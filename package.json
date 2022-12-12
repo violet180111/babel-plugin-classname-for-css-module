@@ -1,0 +1,53 @@
+{
+  "name": "babel-plugin-classname-for-css-module",
+  "version": "0.0.1",
+  "author": "violet180111",
+  "description": "A babel plugin that lets you write classname directly without import xxx.css.module",
+  "keywords": [
+    "babel-plugin",
+    "classname",
+    "css-module"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "main": "index.js",
+  "files": [
+    "lib"
+  ],
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./runtime": "./lib/runtimeGetClassName.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "npm run build:compile && npm run build:runtime && npm run build:runtime:types",
+    "build:compile": "cross-env TYPE=compile babel ./src/index.ts --config-file ./babel.config.js -d lib --extensions .ts --no-comments",
+    "build:runtime": "cross-env TYPE=runtime babel ./src/runtimeGetClassName.ts --config-file ./babel.config.js -d lib --extensions .ts --no-comments",
+    "build:runtime:types": "tsc -b ./tsconfig.runtime.json"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.5",
+    "@babel/helper-plugin-utils": "^7.20.2",
+    "@babel/node": "^7.20.5",
+    "@babel/plugin-syntax-jsx": "^7.18.6",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
+    "@tsconfig/node16": "^1.0.3",
+    "@types/babel__core": "^7.1.20",
+    "@types/babel__helper-plugin-utils": "^7.10.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^29.2.4",
+    "@types/node": "^18.11.13",
+    "cross-env": "^7.0.3",
+    "fs-extra": "^11.1.0",
+    "jest": "29.3.1",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.4"
+  }
+}
