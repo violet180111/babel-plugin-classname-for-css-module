@@ -23,10 +23,6 @@ export default declare(function classNameForCssModulePlugin(api) {
               const [styles, moduleSymbol] = regExpMatchArray[0].split('.');
 
               if (moduleSymbol === 'module') {
-                if (pathname === runtimeUtilImportId) {
-                  state.set('runtimeUtilImportId', runtimeUtilImportId);
-                }
-
                 const styleImportDefaultName = path.scope.generateUid(styles);
 
                 state.set('styleImportDefaultName', styleImportDefaultName);
@@ -42,7 +38,7 @@ export default declare(function classNameForCssModulePlugin(api) {
           },
         });
 
-        if (state.get('isImportStyle') && !state.get('runtimeUtilImportId')) {
+        if (state.get('isImportStyle')) {
           const runtimeUtilImportDefaultName = path.scope.generateUid(runtimeImportDefaultName);
 
           state.set('runtimeUtilImportDefaultName', runtimeUtilImportDefaultName);
