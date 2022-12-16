@@ -1,24 +1,38 @@
-import _getClassName from 'babel-plugin-classname-for-css-module/runtime';
-import _style from './style.module.css';
+import _gcn from 'babel-plugin-classname-for-css-module/runtime';
+import _style from './style1.module.css';
+import _style2 from './style2.module.css';
+import _test from './style3.module.css';
+import _test2 from './style4.module.css';
+const _sym = {
+  style1: '_style',
+  _style,
+  style2: '_style2',
+  _style2,
+  test1: '_test',
+  _test,
+  test2: '_test2',
+  _test2
+};
 function Test() {
   return;
   <>
-    <div className={_getClassName('test', _style)}></div>
-    <div className={_getClassName('test1 test2', _style)}></div>
-    <div className={_getClassName(`${Math.random() > .5 ? 'a' : 'b'}`, _style)}></div>
-    <div className={_getClassName(function (a, b) {}('a', 'b'), _style)}></div>
-    <div className={_getClassName(((a, b) => {})('a', 'b'), _style)}></div>
-    <div className={_getClassName(fn('a', 'b'), _style)}></div>
-    <div className={_getClassName([].map(() => {}), _style)}></div>
-    <div className={_getClassName(Math.random() > .5 ? 'a' : 'b', _style)}></div>
-    <div className={_getClassName(['a', 'b'], _style)}></div>
-    <div className={_getClassName(a = 'a', _style)}></div>
-    <div className={_getClassName('a' + 'b', _style)}></div>
-    <div className={_getClassName('a', _style)}></div>
-    <div className={_getClassName(function () {}, _style)}></div>
-    <div className={_getClassName(() => {}, _style)}></div>
-    <div className={_getClassName(class {}, _style)}></div>
-    <div className={_getClassName(a, _style)}></div>
-    <div className={_getClassName(this, _style)}></div>
-  </>;
+      <div className={_gcn('test', _sym)}></div>
+      <div className={_gcn('test1 test2', _sym)}></div>
+      <div className={_gcn('test1.a test2.b', _sym)}></div>
+      <div className={_gcn(`${Math.random() > .5 ? 'a' : 'b'}`, _sym)}></div>
+      <div className={_gcn(function (a, b) {}('a', 'b'), _sym)}></div>
+      <div className={_gcn(((a, b) => {})('a', 'b'), _sym)}></div>
+      <div className={_gcn(fn('a', 'b'), _sym)}></div>
+      <div className={_gcn([].map(() => {}), _sym)}></div>
+      <div className={_gcn(Math.random() > .5 ? 'a' : 'b', _sym)}></div>
+      <div className={_gcn(['a', 'b'], _sym)}></div>
+      <div className={_gcn(a = 'a', _sym)}></div>
+      <div className={_gcn('a' + 'b', _sym)}></div>
+      <div className={_gcn('a', _sym)}></div>
+      <div className={_gcn(function () {}, _sym)}></div>
+      <div className={_gcn(() => {}, _sym)}></div>
+      <div className={_gcn(class {}, _sym)}></div>
+      <div className={_gcn(a, _sym)}></div>
+      <div className={_gcn(this, _sym)}></div>
+    </>;
 }

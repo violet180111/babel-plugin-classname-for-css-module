@@ -1,9 +1,14 @@
-import './style.module.css';
+import './style1.module.css';
+import './style2.module.css';
+import './style3.module.css'/* test1 */;
+import './style4.module.css'/* test2 */;
+
 function Test() {
   return
     <>
       <div className='test'></div>
       <div className='test1 test2'></div>
+      <div className='test1.a test2.b'></div>
       <div className={`${Math.random() > .5 ? 'a' : 'b'}`}></div>
       <div className={(function(a, b){})('a','b')}></div>
       <div className={((a, b) => {})('a','b')}></div>
