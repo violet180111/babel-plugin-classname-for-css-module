@@ -1,6 +1,6 @@
 # babel-plugin-classname-for-css-module
 
-[English| [简体中文](./README-zh_CN.md)
+English | [简体中文](./README-zh_CN.md)
 
 ## ✨ Features
 
