@@ -13,9 +13,9 @@ export default declare(function classNameForCssModulePlugin(api) {
   const runtimeImportDefaultName = 'gcn';
   // 多个样式文件导入时，它们会被组合在一个"map"中，"map"的名字
   const styleMap = 'sym';
-  // 匹配./xxx.module.(css|less|sass) => xxx.module
+  // 匹配./xxx.module.(css|less|sass|scss) => xxx.module
   const stylePathnameReg =
-    /(?<=(?:\/))(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\..*)(\..+)?$)[^\x00-\x1f\\?*:\";|/]+(?=((?=\.(?:css|less|sass)$)))/;
+    /(?<=(?:\/))(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\..*)(\..+)?$)[^\x00-\x1f\\?*:\";|/]+(?=((?=\.(?:css|less|sass|scss)$)))/;
 
   // 保存最后一个的ImportDeclaration 然后在其后面插入styleMap
   let lastImportNodePath: NodePath | null = null;
@@ -40,7 +40,7 @@ export default declare(function classNameForCssModulePlugin(api) {
               const [styleImportName, moduleSymbol] = regExpMatchArray[0].split('.');
 
               if (moduleSymbol === 'module') {
-                // 有注释就取注释当作styleImportDefaultName 没有就取xxx.module.(css|less|sass) => xxx
+                // 有注释就取注释当作styleImportDefaultName 没有就取xxx.module.(css|less|sass|scss) => xxx
                 // 同时把注释去除
                 const leadingCommentStyleImportName = curPath.node.source.trailingComments?.shift();
                 const styleImportDefaultName = leadingCommentStyleImportName

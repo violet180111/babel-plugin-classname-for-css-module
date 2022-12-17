@@ -1,19 +1,22 @@
 type S = string;
 type SR = Record<S, S>;
 
-export default function getClassName(classNameWithStyleKey: S, styleObj: Record<S, SR | S>) {
+export default function getClassName(
+  classNameWithStyleKey: S,
+  styleObj: Record<S, SR | S> | Array<SR>,
+) {
   classNameWithStyleKey.replace(/\s{2,}/, ' ');
 
   const classNameList = classNameWithStyleKey.split(' ');
+  const isArray = Array.isArray(styleObj);
 
-  return (
-    Array.isArray(styleObj)
-      ? classNameList.reduce((acc, cur) => `${acc} ${(<SR>styleObj[0])[cur]}`, '')
-      : classNameList.reduce((acc, cur) => {
-          const [key, name] = cur.split('.');
-          const styleId = <S>styleObj[key];
+  return classNameList
+    .reduce((acc, cur) => {
+      const [key, name] = cur.split('.');
+      const styleId = <string>(<Record<S, SR | S>>styleObj)[key];
+      const className = isArray ? styleObj[0][name ?? key] : (<SR>styleObj[styleId])[name];
 
-          return `${acc} ${(<SR>styleObj[styleId])[name]}`;
-        }, '')
-  ).trimStart();
+      return `${acc} ${className ?? cur}`;
+    }, '')
+    .trimStart();
 }
