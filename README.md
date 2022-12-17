@@ -98,6 +98,7 @@ function Test() {
 #### will be transform to:
 
 ```jsx
+// This is just an example; the actual class names will be determined by your css
 <div className="_App_ahvyq_8 _test_ahvyq_46"></div>
 ```
 
@@ -126,20 +127,72 @@ pnpm i babel-plugin-classname-for-css-module -D
 import './style.module.css';
 ```
 
-- you can do this if you have multiple stylesheets to import. (note: the introduction of the CSS file specification must be XXX.module.(CSS |less|sass))
+- you can do this if you have multiple stylesheets to import. (note: the introduction of the CSS file specification must be XXX.module.(css|less|sass|scss))
 
 ```jsx
 import './style3.module.css';
 import './style4.module.css';
 
-<div className="style3.xxx style4.xxx"></div>;
+function App() {
+  return (
+    <div className="style3.xxx style4.xxx"></div>;
+  );
+}
+
+export default App;
 ```
 
-- you can also use comments to decide which class names to import.
+- you can also use comments to decide which class names to import.(without comments, the imported class is named xxx.module => xxx)
 
 ```jsx
-import './style3.module.css' /* test1 */;
-import './style4.module.css' /* test2 */;
+import './style3.module.less' /* test1 */;
+import './style4.module.sass' /* test2 */;
 
-<div className="test1.xxx test2.xxx"></div>;
+function App() {
+  return (
+    <div className="test1.xxx test2.xxx"></div>;
+  );
+}
+
+export default App;
 ```
+
+- If you are using less or sass syntax (imported styles will be automatically smoothed if there are nested rules)
+
+![df9bfe66400aba21ec64a29689fc54a.png](https://s2.loli.net/2022/12/17/nP3JL2yoEimDf7B.png)
+
+```jsx
+// style3.module.less
+.a {
+  display: flex;
+
+  &-child {
+    display: flex;
+  }
+}
+// style4.module.sass
+.b
+  display: flex
+  &-child
+    display: flex
+    
+// App.jsx
+import './style3.module.less' /* test1 */;
+import './style4.module.sass' /* test2 */;
+
+function App() {
+  return (
+    <>
+      <div className="test1.a">
+        <div className="test1.a-child"></div>
+      </div>
+      <div className="test2.b">
+        <div className="test2.b-child"></div>
+      </div>
+    </>
+  );
+}
+
+export default App;
+```
+

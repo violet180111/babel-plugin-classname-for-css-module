@@ -92,13 +92,14 @@ function Test() {
 #### 如下:
 
 ```jsx
-<div className="App test"></div>
+<div className="test1 test2"></div>
 ```
 
 #### 将会被转换为:
 
 ```jsx
-<div className="_App_ahvyq_8 _test_ahvyq_46"></div>
+// 只是一个例子，实际转换后的类名由你写的css为准
+<div className="_test1_ahvyq_8 _test2_ahvyq_46"></div>
 ```
 
 ## 📦 安装
@@ -120,7 +121,7 @@ pnpm i babel-plugin-classname-for-css-module -D
 }
 ```
 
-- 然后你只需要在你想要使用它的 js 文件中引入 css module (注意：引入的 css 文件名规范一定要是 xxx.module.(css|less|sass))
+- 然后你只需要在你想要使用它的 js 文件中引入 css module (注意：引入的 css 文件名规范一定要是 xxx.module.(css|less|sass|scss))
 
 ```js
 import './style.module.css';
@@ -132,14 +133,65 @@ import './style.module.css';
 import './style3.module.css';
 import './style4.module.css';
 
-<div className="style3.xxx style4.xxx"></div>;
+function App() {
+  return (
+    <div className="style3.xxx style4.xxx"></div>;
+  );
+}
+
+export default App;
 ```
 
-- 你还可以通过注释决定导入的类名
+- 你还可以通过注释决定导入的类名（不写注释时，导入的类名为xxx.module => xxx）
 
 ```jsx
-import './style3.module.css' /* test1 */;
-import './style4.module.css' /* test2 */;
+import './style3.module.less' /* test1 */;
+import './style4.module.sass' /* test2 */;
 
-<div className="test1.xxx test2.xxx"></div>;
+function App() {
+  return (
+    <div className="test1.xxx test2.xxx"></div>;
+  );
+}
+
+export default App;
+```
+
+- 如果你使用的是 less 或者 sass 语法（当存在嵌套规则时，导入的styles会自动铺平）
+
+  ![df9bfe66400aba21ec64a29689fc54a.png](https://s2.loli.net/2022/12/17/nP3JL2yoEimDf7B.png)
+
+```jsx
+// style3.module.less
+.a {
+  display: flex;
+
+  &-child {
+    display: flex;
+  }
+}
+// style4.module.sass
+.b
+  display: flex
+  &-child
+    display: flex
+    
+// App.jsx
+import './style3.module.less' /* test1 */;
+import './style4.module.sass' /* test2 */;
+
+function App() {
+  return (
+    <>
+      <div className="test1.a">
+        <div className="test1.a-child"></div>
+      </div>
+      <div className="test2.b">
+        <div className="test2.b-child"></div>
+      </div>
+    </>
+  );
+}
+
+export default App;
 ```
