@@ -1,5 +1,7 @@
 # babel-plugin-classname-for-css-module
 
+[English| [简体中文](./README-zh_CN.md)
+
 ## ✨ Features
 
 This plugin allows you to write string classnames **directly** in jsx, and then the classnames will **automatically adapt to** the css module.
@@ -9,31 +11,31 @@ This plugin allows you to write string classnames **directly** in jsx, and then 
 ```jsx
 import './style1.module.css';
 import './style2.module.css';
-import './style3.module.css'/* test1 */;
-import './style4.module.css'/* test2 */;
+import './style3.module.css' /* test1 */;
+import './style4.module.css' /* test2 */;
 
 function Test() {
-  return
-    <>
-      <div className='test'></div>
-      <div className='test1 test2'></div>
-      <div className='test1.a test2.b'></div>
-      <div className={`${Math.random() > .5 ? 'a' : 'b'}`}></div>
-      <div className={(function(a, b){})('a','b')}></div>
-      <div className={((a, b) => {})('a','b')}></div>
-      <div className={fn('a','b')}></div>
-      <div className={[].map(() => {})}></div>
-      <div className={Math.random() > .5 ? 'a' : 'b'}></div>
-      <div className={['a','b']}></div>
-      <div className={a = 'a'}></div>
-      <div className={'a' + 'b'}></div>
-      <div className={'a'}></div>
-      <div className={function(){}}></div>
-      <div className={() => {}}></div>
-      <div className={class{}}></div>
-      <div className={a}></div>
-      <div className={this}></div>
-    </>;
+  return;
+  <>
+    <div className="test"></div>
+    <div className="test1 test2"></div>
+    <div className="test1.a test2.b"></div>
+    <div className={`${Math.random() > 0.5 ? 'a' : 'b'}`}></div>
+    <div className={(function (a, b) {})('a', 'b')}></div>
+    <div className={((a, b) => {})('a', 'b')}></div>
+    <div className={fn('a', 'b')}></div>
+    <div className={[].map(() => {})}></div>
+    <div className={Math.random() > 0.5 ? 'a' : 'b'}></div>
+    <div className={['a', 'b']}></div>
+    <div className={(a = 'a')}></div>
+    <div className={'a' + 'b'}></div>
+    <div className={'a'}></div>
+    <div className={function () {}}></div>
+    <div className={() => {}}></div>
+    <div className={class {}}></div>
+    <div className={a}></div>
+    <div className={this}></div>
+  </>;
 }
 ```
 
@@ -53,30 +55,35 @@ const _sym = {
   test1: '_test',
   _test,
   test2: '_test2',
-  _test2
+  _test2,
 };
 function Test() {
   return;
   <>
-      <div className={_gcn('test', _sym)}></div>
-      <div className={_gcn('test1 test2', _sym)}></div>
-      <div className={_gcn('test1.a test2.b', _sym)}></div>
-      <div className={_gcn(`${Math.random() > .5 ? 'a' : 'b'}`, _sym)}></div>
-      <div className={_gcn(function (a, b) {}('a', 'b'), _sym)}></div>
-      <div className={_gcn(((a, b) => {})('a', 'b'), _sym)}></div>
-      <div className={_gcn(fn('a', 'b'), _sym)}></div>
-      <div className={_gcn([].map(() => {}), _sym)}></div>
-      <div className={_gcn(Math.random() > .5 ? 'a' : 'b', _sym)}></div>
-      <div className={_gcn(['a', 'b'], _sym)}></div>
-      <div className={_gcn(a = 'a', _sym)}></div>
-      <div className={_gcn('a' + 'b', _sym)}></div>
-      <div className={_gcn('a', _sym)}></div>
-      <div className={_gcn(function () {}, _sym)}></div>
-      <div className={_gcn(() => {}, _sym)}></div>
-      <div className={_gcn(class {}, _sym)}></div>
-      <div className={_gcn(a, _sym)}></div>
-      <div className={_gcn(this, _sym)}></div>
-    </>;
+    <div className={_gcn('test', _sym)}></div>
+    <div className={_gcn('test1 test2', _sym)}></div>
+    <div className={_gcn('test1.a test2.b', _sym)}></div>
+    <div className={_gcn(`${Math.random() > 0.5 ? 'a' : 'b'}`, _sym)}></div>
+    <div className={_gcn((function (a, b) {})('a', 'b'), _sym)}></div>
+    <div className={_gcn(((a, b) => {})('a', 'b'), _sym)}></div>
+    <div className={_gcn(fn('a', 'b'), _sym)}></div>
+    <div
+      className={_gcn(
+        [].map(() => {}),
+        _sym,
+      )}
+    ></div>
+    <div className={_gcn(Math.random() > 0.5 ? 'a' : 'b', _sym)}></div>
+    <div className={_gcn(['a', 'b'], _sym)}></div>
+    <div className={_gcn((a = 'a'), _sym)}></div>
+    <div className={_gcn('a' + 'b', _sym)}></div>
+    <div className={_gcn('a', _sym)}></div>
+    <div className={_gcn(function () {}, _sym)}></div>
+    <div className={_gcn(() => {}, _sym)}></div>
+    <div className={_gcn(class {}, _sym)}></div>
+    <div className={_gcn(a, _sym)}></div>
+    <div className={_gcn(this, _sym)}></div>
+  </>;
 }
 ```
 
@@ -125,14 +132,14 @@ import './style.module.css';
 import './style3.module.css';
 import './style4.module.css';
 
-<div className="style3.xxx style4.xxx"></div>
+<div className="style3.xxx style4.xxx"></div>;
 ```
 
 - you can also use comments to decide which class names to import.
 
 ```jsx
-import './style3.module.css'/* test1 */;
-import './style4.module.css'/* test2 */;
+import './style3.module.css' /* test1 */;
+import './style4.module.css' /* test2 */;
 
-<div className="test1.xxx test2.xxx"></div>
+<div className="test1.xxx test2.xxx"></div>;
 ```

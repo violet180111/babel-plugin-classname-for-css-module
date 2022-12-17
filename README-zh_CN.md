@@ -1,5 +1,7 @@
 # babel-plugin-classname-for-css-module
 
+[English](./README.md) | 简体中文
+
 ## ✨ 特性
 
 这个插件允许你在 jsx 中 **直接** 编写字符串类名，然后这些类名将 **自动适应** css module。
@@ -118,7 +120,7 @@ pnpm i babel-plugin-classname-for-css-module -D
 }
 ```
 
-- 然后你只需要在你想要使用它的js文件中引入 css module (注意：引入的css文件名规范一定要是xxx.module.(css|less|sass))
+- 然后你只需要在你想要使用它的 js 文件中引入 css module (注意：引入的 css 文件名规范一定要是 xxx.module.(css|less|sass))
 
 ```js
 import './style.module.css';
