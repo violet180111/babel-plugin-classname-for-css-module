@@ -1,25 +1,32 @@
 import { declare } from '@babel/helper-plugin-utils';
 import pkg from '../package.json';
-import type { NodePath, PluginPass } from '@babel/core';
+import type { NodePath } from '@babel/core';
 
 export default declare(function classNameForCssModulePlugin(api) {
   api.assertVersion(7);
 
   const { types, template } = api;
 
+  // 运行时的helper文件路径
   const runtimeUtilImportId = `${pkg.name}/runtime`;
+  // 运行时导入的方法名
   const runtimeImportDefaultName = 'gcn';
+  // 多个样式文件导入时，它们会被组合在一个"map"中，"map"的名字
   const styleMap = 'sym';
+  // 匹配./xxx.module.(css|less|sass) => xxx.module
   const stylePathnameReg =
     /(?<=(?:\/))(?!^(PRN|AUX|CLOCK\$|NUL|CON|COM\d|LPT\d|\..*)(\..+)?$)[^\x00-\x1f\\?*:\";|/]+(?=((?=\.(?:css|less|sass)$)))/;
 
+  // 保存最后一个的ImportDeclaration 然后在其后面插入styleMap
   let lastImportNodePath: NodePath | null = null;
 
   return {
     name: 'babel-plugin-classname-for-css-module',
     visitor: {
       Program(path, state) {
+        // 是否有样式文件导入的mark
         let isImportStyle = false;
+        // 保存导入样式文件的对应的styleImportDefaultName和styleImportDefaultId
         let styles: Array<Array<string>> = [];
 
         path.traverse({
@@ -33,6 +40,8 @@ export default declare(function classNameForCssModulePlugin(api) {
               const [styleImportName, moduleSymbol] = regExpMatchArray[0].split('.');
 
               if (moduleSymbol === 'module') {
+                // 有注释就取注释当作styleImportDefaultName 没有就取xxx.module.(css|less|sass) => xxx
+                // 同时把注释去除
                 const leadingCommentStyleImportName = curPath.node.source.trailingComments?.shift();
                 const styleImportDefaultName = leadingCommentStyleImportName
                   ? leadingCommentStyleImportName.value.replace(/[\s\*]/g, '')
@@ -57,6 +66,7 @@ export default declare(function classNameForCssModulePlugin(api) {
 
           state.set('runtimeUtilImportDefaultName', runtimeUtilImportDefaultName);
 
+          // 注入运行时helper
           path.unshiftContainer(
             'body',
             template.statement(
@@ -70,6 +80,7 @@ export default declare(function classNameForCssModulePlugin(api) {
 
           let styleExpressionCode = '';
 
+          // 如果引入的样式文件超过一个则styleMap为对象形式，否则是数组形式
           if (styles.length > 1) {
             styleExpressionCode = `{${styles.reduce((acc, cur) => {
               const [styleImportDefaultName, styleImportDefaultId] = cur;
@@ -82,6 +93,7 @@ export default declare(function classNameForCssModulePlugin(api) {
             styleExpressionCode = `[${styleImportDefaultId}]`;
           }
 
+          // 在最后一个import后面插入styleMap
           (<NodePath>lastImportNodePath).insertAfter(
             types.variableDeclaration('const', [
               types.variableDeclarator(
@@ -92,27 +104,7 @@ export default declare(function classNameForCssModulePlugin(api) {
           );
         }
       },
-      StringLiteral(path, state) {
-        const parentPath = path.findParent((p) => p.isJSXAttribute());
-
-        if (!parentPath) return;
-
-        if (path.parentPath.isJSXAttribute() && path.parentPath.node.name.name === 'className') {
-          const styleStatement = `${state.get(
-            'runtimeUtilImportDefaultName',
-          )}(${path.getSource()}, ${state.get('styleMapId')})`;
-          const styleExpression = template.expression(styleStatement)();
-
-          if (path.parentPath.isJSXExpressionContainer()) {
-            path.replaceWith(styleExpression);
-          } else {
-            path.replaceWith(types.jsxExpressionContainer(styleExpression));
-          }
-
-          path.skip();
-        }
-      },
-      Expression(path: NodePath, state: PluginPass) {
+      Expression(path, state) {
         const parentPath = path.findParent((p) => p.isJSXAttribute());
 
         if (!parentPath) return;
@@ -123,7 +115,13 @@ export default declare(function classNameForCssModulePlugin(api) {
           )}(${path.getSource()}, ${state.get('styleMapId')})`;
           const styleExpression = template.expression(styleStatement)();
 
-          path.replaceWith(styleExpression);
+          if (path.parentPath.isJSXExpressionContainer()) {
+            path.replaceWith(styleExpression);
+          } else {
+            // 处理<div className="test"></div>的情况 className不是被jsxExpressionContainer包裹的字符串
+            path.replaceWith(types.jsxExpressionContainer(styleExpression));
+          }
+
           path.skip();
         }
       },
