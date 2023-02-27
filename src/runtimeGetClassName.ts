@@ -13,8 +13,9 @@ export default function getClassName(
   return classNameList
     .reduce((acc, cur) => {
       const [key, name] = cur.split('.');
-      const styleId = <string>(<Record<S, SR | S>>styleObj)[key];
-      const className = isArray ? styleObj[0][name ?? key] : (<SR>styleObj[styleId])[name];
+      const className = isArray
+        ? styleObj[0][name ?? key]
+        : (<SR>styleObj[<string>(<Record<S, SR | S>>styleObj)[key]])[name];
 
       return `${acc} ${className ?? cur}`;
     }, '')

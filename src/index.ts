@@ -55,6 +55,7 @@ export default declare(function classNameForCssModulePlugin(api) {
                   template.statement(`import ${styleImportDefaultId} from '${pathname}';`)(),
                 );
 
+                // 跳过剩余子节点的处理
                 curPath.skip();
               }
             }
@@ -122,6 +123,7 @@ export default declare(function classNameForCssModulePlugin(api) {
             path.replaceWith(types.jsxExpressionContainer(styleExpression));
           }
 
+          // 跳过剩余子节点的处理
           path.skip();
         }
       },
